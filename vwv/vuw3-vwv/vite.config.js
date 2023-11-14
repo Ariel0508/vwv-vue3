@@ -29,9 +29,11 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         // 2.自動導入定制化樣式文件進行樣式覆蓋
+        // 自動導入scss文件
         additionalData: `
           @use "@/styles/element/index.scss" as *;
-        `,
+          @use "@/styles/var.scss" as *;
+          `,
       }
     }
   }
