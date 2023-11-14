@@ -1,3 +1,4 @@
+// 這個配置項只做聯想的提示
 {
     "compilerOptions" : {
       "baseUrl" : "./",
