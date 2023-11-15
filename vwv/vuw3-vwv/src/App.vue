@@ -5,9 +5,9 @@
 <template>
   <!-- 一級路由出口組件 -->
   <RouterView />
-  <div class="test">
+  <!-- <div class="test">
     test scss
-  </div>
+  </div> -->
 </template>
 
 <style scoped lang="scss">
