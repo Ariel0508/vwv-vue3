@@ -1,17 +1,8 @@
 <script setup>
-import { getCategroyAPI } from '@/apis/layout'
-import { ref, onMounted } from 'vue'
+import { useCategroyStore } from '@/stores/category'
 
-const categroyList = ref([])
-const getCategroy = async () =>{
-const res = await getCategroyAPI()
-console.log(res)
-categroyList.value = res.result
-}
-
-onMounted(() => {
-  getCategroy()
-})
+// 使用pinia中的數據
+const CategroyStore = useCategroyStore()
 </script>
 
 <template>
@@ -21,7 +12,7 @@ onMounted(() => {
         <RouterLink to="/">小兔鲜</RouterLink>
       </h1>
       <ul class="app-header-nav">
-        <li class="home" v-for="item in categroyList" :key ="item.id">
+        <li class="home" v-for="item in CategroyStore.categroyList" :key ="item.id">
           <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
       </ul>
