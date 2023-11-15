@@ -10,6 +10,7 @@ const categoryStore = useCategoryStore()
         <ul class="menu">
             <li v-for="item in categoryStore.categoryList" :key="item.id">
                 <RouterLink to="/">{{ item.name }}</RouterLink>
+                <!-- 二級數據 children屬性 有7項只選前2項 siice(0,2)-->
                 <RouterLink v-for="i in item.children.slice(0,2)" :key="i" to="/">{{i.name}}</RouterLink>
                 <!-- 弹层layer位置 -->
                 <div class="layer">
