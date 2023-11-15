@@ -1,17 +1,17 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getCategroyAPI } from '@/apis/layout'
-export const useCategroyStore = defineStore('categroy', () =>{
+import { getCategoryAPI } from '@/apis/layout'
+export const useCategoryStore = defineStore('category', () =>{
 //  導航列表的數據管理
 // state導航列表數據
-const categroyList = ref([])
+const categoryList = ref([])
 // action獲取導航數據方法
-const getCategroy = async () =>{
-const res = await getCategroyAPI()
-categroyList.value = res.result
+const getCategory = async () =>{
+const res = await getCategoryAPI()
+categoryList.value = res.result
 }
 return { 
-    categroyList,
-    getCategroy
+    categoryList,
+    getCategory
 }
 })

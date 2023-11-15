@@ -1,11 +1,11 @@
 <script setup>
 // vueUse
 import { useScroll } from '@vueuse/core'
-import { useCategroyStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/category'
 const { y } = useScroll(window)
 
 // 使用pinia中的數據
-const CategroyStore = useCategroyStore()
+const CategoryStore = useCategoryStore()
 </script>
 
 <template>
@@ -14,7 +14,7 @@ const CategroyStore = useCategroyStore()
             <RouterLink class="logo" to="/" />
             <!-- 导航区域 -->
             <ul class="app-header-nav ">
-                <li class="home" v-for="item in CategroyStore.categroyList" :key ="item.id">
+                <li class="home" v-for="item in CategoryStore.categoryList" :key ="item.id">
           <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
             </ul>

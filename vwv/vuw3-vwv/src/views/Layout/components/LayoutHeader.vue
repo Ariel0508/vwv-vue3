@@ -1,8 +1,8 @@
 <script setup>
-import { useCategroyStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/category'
 
 // 使用pinia中的數據
-const CategroyStore = useCategroyStore()
+const CategoryStore = useCategoryStore()
 </script>
 
 <template>
@@ -12,7 +12,7 @@ const CategroyStore = useCategroyStore()
         <RouterLink to="/">小兔鲜</RouterLink>
       </h1>
       <ul class="app-header-nav">
-        <li class="home" v-for="item in CategroyStore.categroyList" :key ="item.id">
+        <li class="home" v-for="item in CategoryStore.categoryList" :key ="item.id">
           <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
       </ul>
