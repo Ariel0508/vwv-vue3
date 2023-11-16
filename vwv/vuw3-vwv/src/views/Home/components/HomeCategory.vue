@@ -16,9 +16,10 @@ const categoryStore = useCategoryStore()
                 <div class="layer">
                     <h4>分类推荐 <small>根据您的购买或浏览记录推荐</small></h4>
                     <ul>
+                        <!-- 分類推薦商品 goods -->
                         <li v-for="i in item.goods" :key="i.id">
                             <RouterLink to="/">
-                                <img src="i.picture" alt="" />
+                                <img :src="i.picture" alt="" />
                                 <div class="info">
                                     <p class="name ellipsis-2">
                                         {{i.name}}
