@@ -1,10 +1,10 @@
-import httpInstance from "@/utils/http"
+import httpInstance from "@/utils/http";
 
 // 獲取banner
-export function getBannerAPI(){
-    return httpInstance({
-        url:'/home/banner'
-    })
+export function getBannerAPI() {
+  return httpInstance({
+    url: "/home/banner",
+  });
 }
 
 /**
@@ -12,14 +12,20 @@ export function getBannerAPI(){
  * @param {*}
  * @return {*}fimdNewAPI
  */
-export function findNewAPI(){
-    return httpInstance({
-        url:'/home/new'
-    })
+export function findNewAPI() {
+  return httpInstance({
+    url: "/home/new",
+  });
 }
 // 獲取人氣推薦
-export function getHotAPI(){
-    return httpInstance({
-        url:'/home/hot'
-    })
+export function getHotAPI() {
+  return httpInstance({
+    url: "/home/hot",
+  });
+}
+// 獲取產品列表
+export function getGoodsAPI() {
+  return httpInstance({
+    url: "/home/goods",
+  });
 }
