@@ -17,3 +17,9 @@ export function findNewAPI(){
         url:'/home/new'
     })
 }
+// 獲取人氣推薦
+export function getHotAPI(){
+    return httpInstance({
+        url:'/home/hot'
+    })
+}

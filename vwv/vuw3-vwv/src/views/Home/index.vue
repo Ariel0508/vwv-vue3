@@ -4,7 +4,6 @@ import HomeBanner from './components/HomeBanner.vue'
 import HomeHot from './components/HomeHot.vue'
 import HomeNew from './components/HomeNew.vue'
 import HomeProduct from './components/HomeProduct.vue'
-import HomePanel from './components/HomePanel.vue'
 </script>
 
 <template>
@@ -12,11 +11,11 @@ import HomePanel from './components/HomePanel.vue'
         <HomeCategory />
         <HomeBanner />
     </div>
-    <HomeHot />
     <HomeNew />
+    <HomeHot />
     <HomeProduct />
     <!-- 測試面板組件 -->
-    <HomePanel title="新鮮好物" sub-title="新鮮好物 好多商品">
+    <!-- <HomePanel title="新鮮好物" sub-title="新鮮好物 好多商品">
         <div>
             我是新鮮好物的插槽內容
         </div>
@@ -25,6 +24,6 @@ import HomePanel from './components/HomePanel.vue'
         <div>
             我是人氣好物的插槽內容
         </div>
-    </HomePanel >
+    </HomePanel > -->
      
 </template>
