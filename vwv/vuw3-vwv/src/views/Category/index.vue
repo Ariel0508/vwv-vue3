@@ -1,40 +1,50 @@
 <script setup>
-import { getCategoryAPI } from '@/apis/category'
-import { onMounted, ref } from 'vue'
-import { getBannerAPI } from '@/apis/home'
+// import { getCategoryAPI } from '@/apis/category'
+// import { onMounted, ref } from 'vue'
+// import { getBannerAPI } from '@/apis/home'
+import { useBanner } from './composables/useBanner'
 // 在組件中獲取路由參數 useRoute
-import { useRoute } from 'vue-router'
-import GoodsItem from '../Home/components/GoodsItem.vue'  
-import { onBeforeRouteUpdate } from 'vue-router'
+// import { useRoute } from 'vue-router'
+import GoodsItem from '../Home/components/GoodsItem.vue'
+// import { onBeforeRouteUpdate } from 'vue-router'
+import { useCategory } from './composables/useCategory'
 
+// 
+const { categoryData } = useCategory()
+
+// 解構bannerList
+const { bannerList } = useBanner()
 // 獲取數據
-const categoryData = ref({})
-const route = useRoute()
-const getCategory = async (id = route.params.id) => {
-    const res = await getCategoryAPI(id)
-    categoryData.value = res.result
-}
+// const categoryData = ref({})
+// const route = useRoute()
+// // route.params.id存在置後性的問題拿不到最新的數據
+// const getCategory = async (id = route.params.id) => {
+//     const res = await getCategoryAPI(id)
+//     categoryData.value = res.result
+// }
 
-onMounted(() => getCategory())
-// 目標:路由參數變化時，可以將分類數據接口重新發送
-onBeforeRouteUpdate((to)=>{
-// console.log("路由變化了")
-// 存在問題:使用最新的路由參數請求最新的分類數據
-// console.log(to)
-getCategory(to.params.id)
-})
+// onMounted(() => getCategory())
+// // 目標:路由參數變化時，可以將分類數據接口重新發送
+// // to :目標路由對象
+// onBeforeRouteUpdate((to) => {
+//     // console.log("路由變化了")
+//     // 重新發送函數
+//     // 存在問題:使用最新的路由參數請求最新的分類數據
+//     // console.log(to)
+//     getCategory(to.params.id)
+// })
 
-// 獲取banner
-const bannerList = ref([])
+// // 獲取banner
+// const bannerList = ref([])
 
-const getBanner = async () => {
-    const res = await getBannerAPI({
-        distributionSite: '2'
-    })
-    // console.log(res)
-    bannerList.value = res.result
-}
-onMounted(() => getBanner())
+// const getBanner = async () => {
+//     const res = await getBannerAPI({
+//         distributionSite: '2'
+//     })
+//     // console.log(res)
+//     bannerList.value = res.result
+// }
+// onMounted(() => getBanner())
 
 </script>
 
