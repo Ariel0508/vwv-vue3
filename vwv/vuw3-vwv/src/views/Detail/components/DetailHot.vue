@@ -1,17 +1,31 @@
 <script setup>
 // 以24小時熱綁獲取數據渲染模板
 import { getHotGoodsAPI } from '@/apis/detail'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
+// 設計props參數 是配不同的title和數據
+const props = defineProps({
+    hotType: {
+        type: Number
+    }
+})
+
+// 適配title 1-24小時熱榜 2-周熱榜
+const TYPEMAP = {
+    1: '24小時熱榜',
+    2: '周熱榜'
+}
+// 用計算屬性(computed)做適配 物件取值 用[ ]取值
+const title = computed(() => TYPEMAP[props.hotType])
 // 1.封裝街口
 // 2.調用渲染模板
 const hotList = ref([])
 const route = useRoute()
 const getHotList = async () => {
     const res = await getHotGoodsAPI({
-            id: route.params.id,
-            type: 1
-        })
+        id: route.params.id,
+        type: props.hotType
+    })
     hotList.value = res.result
 }
 
@@ -21,7 +35,7 @@ onMounted(() => getHotList())
 
 <template>
     <div class="goods-hot">
-        <h3>周日榜单</h3>
+        <h3>{{ title }}</h3>
         <!-- 商品区块 -->
         <RouterLink to="/" class="goods-item" v-for="item in hotList" :key="item.id">
             <img :src="item.picture" alt="" />
