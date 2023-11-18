@@ -47,8 +47,8 @@ const load = async () => {
   const res = await getSubCategoryAPI(reqData.value)
   // 新老數據拼接 展開運算符
   goodList.value = [...goodList.value, ...res.result.items]
-  if(res.result.items.length === 0){
-    disabled.value = true
+  if(res.result.items.length === 0){//items : [ ]結束監聽
+    disabled.value = true //開啟禁用
   }
 }
 </script>
