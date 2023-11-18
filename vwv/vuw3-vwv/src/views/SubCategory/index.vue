@@ -30,11 +30,26 @@ const getGoodList = async () => {
 onMounted(() => getGoodList())
 
 // tab切換
-const tabChange = ()=>{
+const tabChange = () => {
   // console.log('tab切換了', reqData.value.sortField)
   // 切換後頁數初始化
   reqData.value.page = 1
   getGoodList()
+}
+
+// 加載完畢結束監聽
+const disabled = ref(false)
+// 加載更多
+const load = async () => {
+  // console.log('要加載更多囉')
+  // 獲取下一頁數據
+  reqData.value.page++
+  const res = await getSubCategoryAPI(reqData.value)
+  // 新老數據拼接 展開運算符
+  goodList.value = [...goodList.value, ...res.result.items]
+  if(res.result.items.length === 0){
+    disabled.value = true
+  }
 }
 </script>
 
@@ -55,7 +70,7 @@ const tabChange = ()=>{
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
       </el-tabs>
-      <div class="body">
+      <div class="body" v-infinite-scroll="load" :infinite-scroll-disabled="disabled">
         <!-- 商品列表-->
         <GoodsItem v-for="goods in goodList" :goods="goods" :key="goods.id" />
       </div>
