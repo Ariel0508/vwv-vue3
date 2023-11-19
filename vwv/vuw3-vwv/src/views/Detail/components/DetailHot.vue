@@ -3,7 +3,7 @@
 import { getHotGoodsAPI } from '@/apis/detail'
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-// 設計props參數 是配不同的title和數據
+// 設計props參數 適配不同的title和數據
 const props = defineProps({
     hotType: {
         type: Number
