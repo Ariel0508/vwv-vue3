@@ -25,8 +25,14 @@ const { elementX, elementY, isOutside } = useMouseInElement(target)
 // 3.控制滑塊跟著鼠標移動 監聽elementX/Y 一旦變化重新設置 left/top
 const left = ref(0)
 const top = ref(0)
-watch([elementX, elementY], () =>{
+// 大圖效果                   
+const positionX = ref(0)
+const positionY = ref(0)
+watch([elementX, elementY,isOutside], () =>{
 console.log('x,y變化了')
+// 如果鼠標沒有移入盒子內， 直接不執行後面的邏輯
+if(isOutside.value) return
+console.log('後面邏輯執行了')
 // 有效範圍內控制滑塊距離
 // 橫向
 if(elementX.value > 100 && elementX.value < 300)
@@ -41,7 +47,11 @@ if(elementX.value > 300) left.value = 200
 // 縱向
 if(elementY.value < 100) top.value = 0
 if(elementY.value > 300) top.value = 200
+// 控制大圖的顯示
+positionX.value = -left.value * 2
+positionY.value = -top.value * 2
 })
+
 </script>
 
 
@@ -52,7 +62,8 @@ if(elementY.value > 300) top.value = 200
         <div class="middle" ref="target">
             <img :src="imageList[activeIndex]" alt="" />
             <!-- 蒙层小滑块 -->
-            <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
+            <!-- isOutside代表是否在外面，要取反 !isOutside 代表是否在裡面 -->
+            <div class="layer" v-show="!isOutside" :style="{ left: `${left}px`, top: `${top}px` }"></div>
         </div>
         <!-- 小图列表 -->
         <ul class="small">
@@ -64,11 +75,11 @@ if(elementY.value > 300) top.value = 200
         <!-- 放大镜大图 -->
         <div class="large" :style="[
             {
-                backgroundImage: `url(${imageList[0]})`,
-                backgroundPositionX: `0px`,
-                backgroundPositionY: `0px`,
+                backgroundImage: `url(${imageList[activeIndex]})`,
+                backgroundPositionX: `${positionX}px`,
+                backgroundPositionY: `${positionY}px`,
             },
-        ]" v-show="false"></div>
+        ]" v-show="!isOutside"></div>
     </div>
 </template>
 
