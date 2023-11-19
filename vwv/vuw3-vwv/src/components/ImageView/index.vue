@@ -1,5 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useMouseInElement } from '@vueuse/core'
+
 // 图片列表
 const imageList = [
     "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
@@ -16,20 +18,46 @@ const enterhandler = (i) => {
     activeIndex.value = i
 }
 
+// 2.獲取鼠標相對位置
+const target = ref(null)
+const { elementX, elementY, isOutside } = useMouseInElement(target)
+
+// 3.控制滑塊跟著鼠標移動 監聽elementX/Y 一旦變化重新設置 left/top
+const left = ref(0)
+const top = ref(0)
+watch([elementX, elementY], () =>{
+console.log('x,y變化了')
+// 有效範圍內控制滑塊距離
+// 橫向
+if(elementX.value > 100 && elementX.value < 300)
+left.value = elementX.value - 100
+// 縱向
+if(elementY.value > 100 && elementY.value < 300)
+top.value = elementY.value - 100
+// 邊界距離控制
+// 橫向
+if(elementX.value < 100) left.value = 0
+if(elementX.value > 300) left.value = 200
+// 縱向
+if(elementY.value < 100) top.value = 0
+if(elementY.value > 300) top.value = 200
+})
 </script>
 
 
 <template>
+    <!-- {{ elementX }}, {{ elementY }}, {{ isOutside }} -->
     <div class="goods-image">
         <!-- 左侧大图-->
         <div class="middle" ref="target">
             <img :src="imageList[activeIndex]" alt="" />
             <!-- 蒙层小滑块 -->
-            <div class="layer" :style="{ left: `0px`, top: `0px` }"></div>
+            <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
         </div>
         <!-- 小图列表 -->
         <ul class="small">
-            <li v-for="(img, i) in imageList" :key="i" @mouseenter="enterhandler(i)" :class="{active:i === activeIndex}">
+            <!-- 通過下標值(i)控制active是否顯示 => 動態類名控制 :class="{ }" -->
+            <li v-for="(img, i) in imageList" :key="i" @mouseenter="enterhandler(i)" :class="{ active: i === activeIndex }">
                 <img :src="img" alt="" />
             </li>
         </ul>
