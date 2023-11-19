@@ -1,5 +1,5 @@
 <script setup>
-// 以24小時熱綁獲取數據渲染模板
+// 以24小時熱榜獲取數據渲染模板
 import { getHotGoodsAPI } from '@/apis/detail'
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
