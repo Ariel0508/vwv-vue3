@@ -8,7 +8,7 @@ const form = ref({
     agree: true
 })
 //2.規則物件
-const rules = ref({
+const rules = {
     account: [
         { required: true, message: '用戶名不能為空', trigger: 'blur' }
     ],
@@ -31,7 +31,25 @@ const rules = ref({
             }
         }
     ]
-})
+}
+
+// 3.獲取form實例做統一校驗
+const formRef = ref(null)
+const doLogin = ()=>{
+    // 調用實例方法
+    formRef.value.validate((valid)=>{
+        console.log(valid)
+        // valid: 所有表單都通過校驗 才為true
+        if(valid){
+            // TODO LOGIN
+        }
+    })
+}
+
+// 總結
+// 1.用戶明和密碼 只需要通過簡單的配置 (看文檔的方式 - 複雜功能通過多個不同組件拆解)
+// 2.同意協議 自定義規則validtor:(rule, value, callback) ={ } *無論成功或失敗都要用到callback
+// 3.統一校驗 通過調用form實例的方法 validate -> true
 </script>
 
 
@@ -56,7 +74,7 @@ const rules = ref({
                 </nav>
                 <div class="account-box">
                     <div class="form">
-                        <el-form :model="form" :rules="rules" label-position="right" label-width="60px" status-icon>
+                        <el-form ref="formRef" :model="form" :rules="rules"  label-position="right" label-width="60px" status-icon>
                             <el-form-item prop="account" label="账户">
                                 <el-input v-model="form.account" />
                             </el-form-item>
@@ -68,7 +86,7 @@ const rules = ref({
                                     我已同意隐私条款和服务条款
                                 </el-checkbox>
                             </el-form-item>
-                            <el-button size="large" class="subBtn">点击登录</el-button>
+                            <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
                         </el-form>
                     </div>
                 </div>
