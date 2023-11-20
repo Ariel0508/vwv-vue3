@@ -18,4 +18,7 @@ return {
     userInfo,
     getUserInfo
 }
-}) 
+},{
+    // 持久化配置 存入localStorage       
+    persist: true,
+  }) 
