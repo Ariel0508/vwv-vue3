@@ -2,12 +2,16 @@
 // 表單校驗 (帳號名+密碼)
 import { ref } from 'vue'
 // 引入封裝街口
-import { loginAPI } from '@/apis/user'
+// import { loginAPI } from '@/apis/user'
+import { useUserStore } from '@/stores/user'
 // 使用unplugin-element-plus組件
-import 'element-plus/es/components/message/style/css'
+import 'element-plus/es/components/message/style/css' //樣式需要單獨引入
 import { ElMessage } from 'element-plus'
 // 路由跳轉 useRouter() => 調用方法 useRoute => 獲取路由參數
 import { useRouter } from 'vue-router'
+
+const userStore = useUserStore() 
+
 // 1.準備表單物件
 const form = ref({
     account: '',
@@ -51,8 +55,9 @@ const doLogin = () => {
         // valid: 所有表單都通過校驗 才為true
         if (valid) {
             // TODO LOGIN 調用接口
-            const res = await loginAPI({ account, password })
-            console.log(res)
+            await userStore.getUserInfo({ account, password })
+            // const res = await loginAPI({ account, password })
+            // console.log(res)
             // 1.提示用戶是否登入成功
             ElMessage({ type: 'success', message: '登入成功' })
             // 2.跳轉首頁
