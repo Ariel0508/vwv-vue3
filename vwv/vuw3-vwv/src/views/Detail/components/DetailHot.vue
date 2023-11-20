@@ -17,7 +17,7 @@ const TYPEMAP = {
 }
 // 用計算屬性(computed)做適配 物件取值 用[ ]取值
 const title = computed(() => TYPEMAP[props.hotType])
-// 1.封裝街口
+// 1.封裝接口
 // 2.調用渲染模板
 const hotList = ref([])
 const route = useRoute()

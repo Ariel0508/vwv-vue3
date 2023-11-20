@@ -1,6 +1,13 @@
 <script setup>
 // 表單校驗 (帳號名+密碼)
 import { ref } from 'vue'
+// 引入封裝街口
+import { loginAPI } from '@/apis/user'
+// 使用unplugin-element-plus組件
+import 'element-plus/es/components/message/style/css'
+import { ElMessage } from 'element-plus'
+// 路由跳轉 useRouter() => 調用方法 useRoute => 獲取路由參數
+import { useRouter } from 'vue-router'
 // 1.準備表單物件
 const form = ref({
     account: '',
@@ -16,18 +23,18 @@ const rules = {
         { required: true, message: '密碼不能為空', trigger: 'blur' },
         { min: 6, max: 14, message: '請輸入6~14個字符', trigger: 'blur' }
     ],
-    agree:[
+    agree: [
         // 自定義校驗規則
         {
-            validator:(rule, value, callback) => {
+            validator: (rule, value, callback) => {
                 console.log(value)
-            // value:當前輸入的數據
-            // callback:校驗處理函數 校驗通過調用
-             if(value){
-                callback()
-             }else{
-                callback(new Error('請勾選同意協議'))
-             }
+                // value:當前輸入的數據
+                // callback:校驗處理函數 校驗通過調用
+                if (value) {
+                    callback()
+                } else {
+                    callback(new Error('請勾選同意協議'))
+                }
             }
         }
     ]
@@ -35,19 +42,27 @@ const rules = {
 
 // 3.獲取form實例做統一校驗
 const formRef = ref(null)
-const doLogin = ()=>{
+const router = useRouter()
+const doLogin = () => {
+    const { account, password } = form.value
     // 調用實例方法
-    formRef.value.validate((valid)=>{
+    formRef.value.validate(async (valid) => {
         console.log(valid)
         // valid: 所有表單都通過校驗 才為true
-        if(valid){
-            // TODO LOGIN
+        if (valid) {
+            // TODO LOGIN 調用接口
+            const res = await loginAPI({ account, password })
+            console.log(res)
+            // 1.提示用戶是否登入成功
+            ElMessage({ type: 'success', message: '登入成功' })
+            // 2.跳轉首頁
+            router.replace({ path: '/' })
         }
     })
 }
 
 // 總結
-// 1.用戶明和密碼 只需要通過簡單的配置 (看文檔的方式 - 複雜功能通過多個不同組件拆解)
+// 1.用戶名和密碼 只需要通過簡單的配置 (看文檔的方式 - 複雜功能通過多個不同組件拆解)
 // 2.同意協議 自定義規則validtor:(rule, value, callback) ={ } *無論成功或失敗都要用到callback
 // 3.統一校驗 通過調用form實例的方法 validate -> true
 </script>
@@ -74,7 +89,8 @@ const doLogin = ()=>{
                 </nav>
                 <div class="account-box">
                     <div class="form">
-                        <el-form ref="formRef" :model="form" :rules="rules"  label-position="right" label-width="60px" status-icon>
+                        <el-form ref="formRef" :model="form" :rules="rules" label-position="right" label-width="60px"
+                            status-icon>
                             <el-form-item prop="account" label="账户">
                                 <el-input v-model="form.account" />
                             </el-form-item>
@@ -82,7 +98,7 @@ const doLogin = ()=>{
                                 <el-input v-model="form.password" />
                             </el-form-item>
                             <el-form-item prop="agree" label-width="22px">
-                                <el-checkbox  size="large" v-model="form.agree">
+                                <el-checkbox size="large" v-model="form.agree">
                                     我已同意隐私条款和服务条款
                                 </el-checkbox>
                             </el-form-item>
