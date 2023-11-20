@@ -14,8 +14,8 @@ const userStore = useUserStore()
 
 // 1.準備表單物件
 const form = ref({
-    account: '',
-    password: '',
+    account: '12056258282',
+    password: 'hm#qd@23!',
     agree: true
 })
 //2.規則物件
