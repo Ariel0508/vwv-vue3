@@ -13,10 +13,15 @@ const getUserInfo = async({ account, password })=>{
     const res = await loginAPI({ account, password })
     userInfo.value = res.result
 }
+// 退出時清除用戶信息
+const clearUserInfo = ()=>{
+    userInfo.value = {}
+}
 // 3.以物件的格式把state和action return
 return {
     userInfo,
-    getUserInfo
+    getUserInfo,
+    clearUserInfo
 }
 },{
     // 持久化配置 存入localStorage       
