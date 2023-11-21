@@ -34,7 +34,7 @@ const cartStore = useCartStore()
                     <p>共 {{ cartStore.allCount }} 件商品</p>
                     <p>&yen; {{ cartStore.allPrice.toFixed(2) }} </p>
                 </div>
-                <el-button size="large" type="primary" class="cartBtn">去購物車結算</el-button>
+                <el-button size="large" type="primary" class="cartBtn" @click="$router.push('/cartlist')">去購物車結算</el-button>
             </div>
         </div>
     </div>
