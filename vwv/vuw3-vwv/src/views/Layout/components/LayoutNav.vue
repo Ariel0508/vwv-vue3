@@ -6,13 +6,13 @@ const router = useRouter()
 
 const confirm = () =>{
   console.log('用戶點擊退出')
-  // 退出登入頁物邏輯實現
+  // 退出登入業務邏輯實現
   // 1.清除用戶信息 觸發action
   userStore.clearUserInfo()
   // 2.跳轉回到登入頁
   router.push('/login')
 }
-</script>
+</script>     
 
 <template>
   <nav class="app-topnav">
