@@ -19,11 +19,20 @@ const item = cartList.value.find((item) => goods.skuId === item.skuId)
     }else{
         // 沒找到
         cartList.value.push(goods)
-    }    
+    }       
+}
+
+// 刪除購物車
+const delCart = (skuId)=>{
+        // 思路: 1.splice - 找到要刪除項的下標值
+            //  2. filter - 使用陣列的過濾方法
+        const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+        cartList.value.splice(idx, 1)
 }
 return {
     cartList,
-    addCart
+    addCart,
+    delCart
 }
 },
 {
