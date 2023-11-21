@@ -1,10 +1,13 @@
 <script setup>
-import  DetailHot  from './components/DetailHot.vue'
+import DetailHot from './components/DetailHot.vue'
 // import  ImageView from '@/components/ImageView/index.vue'
 // import XtxSku from '@/components/XtxSku/index.vue'
 import { getDetail } from '@/apis/detail'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { useCartStore } from '@/stores/cartStore'
+const cartStore = useCartStore()
 const goods = ref({})
 const route = useRoute()
 const getGoods = async () => {
@@ -15,8 +18,37 @@ const getGoods = async () => {
 onMounted(() => getGoods())
 
 // sku規格被操作時
-const skuChange = (sku)=>{
+let skuObj = {}
+const skuChange = (sku) => {
     console.log(sku)
+    skuObj = sku
+}
+
+// count
+const count = ref(1)
+const countChange = (count) => {
+    console.log(count)
+}
+
+// 添加購物車
+const addCart = () => {
+    if (skuObj.skuId) {
+        // 已選擇規格 觸發action
+        cartStore.addCart({
+            id: goods.value.id,//商品id
+            name: goods.value.name,//商品名稱
+            picture: goods.value.mainPictures[0],//圖片
+            price: goods.value.price,//商品價格
+            count: count.value,//商品數量
+            skuId: skuObj.skuId,//skuId
+            attrsText: skuObj.specsText,//商品規格文本
+            selected: true//商品是否選中
+        })
+    }
+    else {
+        // 未選擇規格 提示用戶
+        ElMessage.warning('請選擇規格')
+    }
 }
 </script>
 
@@ -48,7 +80,7 @@ const skuChange = (sku)=>{
                         <div class="media">
                             <!-- 图片预览区 -->
                             <!-- 改為全局組件名字 -->
-                             <XtxImageView :image-list="goods.mainPictures" />
+                            <XtxImageView :image-list="goods.mainPictures" />
                             <!-- 统计数量 -->
                             <ul class="goods-sales">
                                 <li>
@@ -97,13 +129,13 @@ const skuChange = (sku)=>{
                                 </dl>
                             </div>
                             <!-- sku组件 -->
-                            <XtxSku :goods="goods" @change="skuChange"/>>
+                            <XtxSku :goods="goods" @change="skuChange" />>
                             <!-- 数据组件 -->
-
+                            <el-input-number v-model="count" @change="countChange" />
                             <!-- 按钮组件 -->
                             <div>
-                                <el-button size="large" class="btn">
-                                    加入购物车
+                                <el-button size="large" class="btn" @click="addCart">
+                                    加入購物車
                                 </el-button>
                             </div>
 
