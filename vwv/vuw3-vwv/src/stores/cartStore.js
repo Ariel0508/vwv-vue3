@@ -35,6 +35,13 @@ export const useCartStore = defineStore(
     //     cartList.value = cartList.value.filter((item) => skuId !== item.skuId);
     // }
 
+  // 單選功能
+  // 通過skuId找到要修改的那一項 然後把它的selected修改為傳過來的selected
+  const singleCheck = (skuId, selected)=>{
+  const item = cartList.value.find((item)=> item.skuId === skuId) 
+  item.selected = selected
+  } 
+
     // 計算購物車內的商品的數量、價錢
     // 1.總數量 所有項count的和
     // 每次累加完都會交給a c是每一項
@@ -51,6 +58,7 @@ export const useCartStore = defineStore(
       allPrice,
       addCart,
       delCart,
+      singleCheck
     };
   },
   {

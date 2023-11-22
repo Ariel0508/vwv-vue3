@@ -1,6 +1,14 @@
 <script setup>
 import { useCartStore } from '@/stores/cartStore'
 const cartStore = useCartStore()
+
+// 單選框回調
+const singleCheck = (i, selected) =>{
+  console.log(i, selected)
+  // store cartLiat 陣列 無法知道要修改誰的選中狀態
+  // 除了selected補充一個用來篩選的參數 - skuId
+  cartStore.singleCheck(i.skuId, selected)
+}
 </script>
 
 <template>
@@ -24,7 +32,10 @@ const cartStore = useCartStore()
           <tbody>
             <tr v-for="i in cartStore.cartList" :key="i.id">
               <td>
-                <el-checkbox />
+                <!-- 單選框 -->
+                <!-- v-model雙向綁定指令不方便進行命令式的操作(因後須還需要調用接口)，
+                  所以把v-model回退到一般模式 => :model-value 和 @change 的配合實現 -->
+                <el-checkbox :model-value="i.selected" @change="(selected)=>singleCheck(i, selected)"/>
               </td>
               <td>
                 <div class="goods">
