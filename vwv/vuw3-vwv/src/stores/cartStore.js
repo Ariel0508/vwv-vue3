@@ -1,26 +1,39 @@
 // 封裝購物車模塊
-
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+import { useUserStore } from "./user";
+import { insertCartAPI, findNewCartListAPI } from "@/apis/cart";
 
-export const useCartStore = defineStore(
-  "cart",
-  () => {
+export const useCartStore = defineStore( "cart",() => {
+    const userStore = useUserStore();
+    const isLogin = computed(() => userStore.userInfo.token);
     // 1.定義state - cartList
     const cartList = ref([]);
     // 2.定義action - addCart
-    const addCart = (goods) => {
+    const addCart = async (goods) => {
+      const { skuId, count } = goods
       // 添加購物車操作
-      // 已添加過 - count + 1
-      // 未添加過 - 直接push
-      // 思路: 通過匹配傳遞過來的商品物件中的skuId能不能在cartList中找到，找到了就是有添加過
-      const item = cartList.value.find((item) => goods.skuId === item.skuId);
-      if (item) {
-        // 有找到
-        item.count++;
+      if (isLogin.value) {
+        // 登入之後的加入購物車邏輯
+        // 調用加入購物車接口
+        await insertCartAPI({ skuId, count })
+        // 調用獲取最新購物車列表接口
+        const res = await findNewCartListAPI()
+        // 用接口購物車列表覆蓋本地購物車列表
+        cartList.value = res.result
       } else {
-        // 沒找到
-        cartList.value.push(goods);
+        // 未登入的加入購物車邏輯-本地購物車
+        // 已添加過 - count + 1
+        // 未添加過 - 直接push
+        // 思路: 通過匹配傳遞過來的商品物件中的skuId能不能在cartList中找到，找到了就是有添加過
+        const item = cartList.value.find((item) => goods.skuId === item.skuId);
+        if (item) {
+          // 有找到
+          item.count++;
+        } else {
+          // 沒找到
+          cartList.value.push(goods);
+        }
       }
     };
 
@@ -59,9 +72,17 @@ export const useCartStore = defineStore(
       cartList.value.reduce((a, c) => a + c.count * c.price, 0)
     );
     // 3.已選取的總數量
-    const selectedCount = computed(() => cartList.value.filter(item => item.selected).reduce((a, c) => a + c.count, 0))
+    const selectedCount = computed(() =>
+      cartList.value
+        .filter((item) => item.selected)
+        .reduce((a, c) => a + c.count, 0)
+    );
     // 4.已選取的總價
-    const selectedPrice = computed(() => cartList.value.filter(item => item.selected).reduce((a, c) => a + c.count * c.price, 0))
+    const selectedPrice = computed(() =>
+      cartList.value
+        .filter((item) => item.selected)
+        .reduce((a, c) => a + c.count * c.price, 0)
+    );
     // 是否全選 => 所有項的selected都為true 用every()每一項
     const isAll = computed(() => cartList.value.every((item) => item.selected));
 
