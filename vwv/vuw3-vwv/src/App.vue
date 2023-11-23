@@ -5,15 +5,16 @@
 <template>
   <!-- 一級路由出口組件 -->
   <RouterView />
-  <!-- <div class="test">
+  <!-- <el-button type="primary">Primary</el-button>
+  <div class="test">
     test scss
   </div> -->
 </template>
 
 <style scoped lang="scss">
-.test{
-  color: $priceColor;
-}
+// .test{
+//   color: $priceColor;
+// }
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -76,3 +77,4 @@ nav a:first-of-type {
   }
 }
 </style>
+

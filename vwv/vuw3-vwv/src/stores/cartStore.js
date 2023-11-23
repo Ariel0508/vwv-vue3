@@ -35,12 +35,18 @@ export const useCartStore = defineStore(
     //     cartList.value = cartList.value.filter((item) => skuId !== item.skuId);
     // }
 
-  // 單選功能
-  // 通過skuId找到要修改的那一項 然後把它的selected修改為傳過來的selected
-  const singleCheck = (skuId, selected)=>{
-  const item = cartList.value.find((item)=> item.skuId === skuId) 
-  item.selected = selected
-  } 
+    // 單選功能
+    // 通過skuId找到要修改的那一項 然後把它的selected修改為傳過來的selected
+    const singleCheck = (skuId, selected) => {
+      const item = cartList.value.find((item) => item.skuId === skuId);
+      item.selected = selected;
+    };
+
+    // 全選功能
+    const allCheck = (selected) => {
+      // 把cartList中的每一項的selected都設置為當前的全選框狀態
+      cartList.value.forEach((item) => (item.selected = selected));
+    };
 
     // 計算購物車內的商品的數量、價錢
     // 1.總數量 所有項count的和
@@ -49,16 +55,22 @@ export const useCartStore = defineStore(
       cartList.value.reduce((a, c) => a + c.count, 0)
     );
     // 2.總價 所有項的count*price的和
-    const allPrice = computed(
-      () => cartList.value.reduce((a, c) => a + c.count * c.price,
-      0));
+    const allPrice = computed(() =>
+      cartList.value.reduce((a, c) => a + c.count * c.price, 0)
+    );
+
+    // 是否全選 => 所有項的selected都為true 用every()每一項
+    const isAll = computed(() => cartList.value.every((item) => item.selected));
+
     return {
       cartList,
       allCount,
       allPrice,
+      isAll,
       addCart,
       delCart,
-      singleCheck
+      singleCheck,
+      allCheck,
     };
   },
   {

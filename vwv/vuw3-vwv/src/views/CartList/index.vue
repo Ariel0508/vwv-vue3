@@ -9,6 +9,11 @@ const singleCheck = (i, selected) =>{
   // 除了selected補充一個用來篩選的參數 - skuId
   cartStore.singleCheck(i.skuId, selected)
 }
+
+  // 全選功能回調
+const allCheck = (selected)=>{
+  cartStore.allCheck(selected)
+}
 </script>
 
 <template>
@@ -19,7 +24,8 @@ const singleCheck = (i, selected) =>{
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox />
+                <!-- 全選框 -->
+                <el-checkbox :model-value="cartStore.isAll" @change="allCheck"/>
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
@@ -33,8 +39,9 @@ const singleCheck = (i, selected) =>{
             <tr v-for="i in cartStore.cartList" :key="i.id">
               <td>
                 <!-- 單選框 -->
-                <!-- v-model雙向綁定指令不方便進行命令式的操作(因後須還需要調用接口)，
-                  所以把v-model回退到一般模式 => :model-value 和 @change 的配合實現 -->
+                <!-- v-model雙向綁定指令不方便進行命令式的操作(因後續還需要調用接口)，
+                  所以把v-model回退到一般模式 => :model-value 和 @change 的配合實現 
+                  通過箭頭函式的方式，在默認的基礎上再增加額外的參數-->
                 <el-checkbox :model-value="i.selected" @change="(selected)=>singleCheck(i, selected)"/>
               </td>
               <td>
