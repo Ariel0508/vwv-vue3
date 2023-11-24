@@ -66,6 +66,11 @@ export const useCartStore = defineStore("cart", () => {
       }
     };
 
+    // 退出登入時清除購物車
+    const clearCart = ()=>{
+      cartList.value = []
+    }
+
     // 單選功能
     // 通過skuId找到要修改的那一項 然後把它的selected修改為傳過來的selected
     const singleCheck = (skuId, selected) => {
@@ -111,6 +116,7 @@ export const useCartStore = defineStore("cart", () => {
       isAll,
       selectedCount,
       selectedPrice,
+      clearCart,
       addCart,
       delCart,
       singleCheck,
