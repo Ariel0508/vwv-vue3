@@ -4,9 +4,7 @@ import { ref } from "vue";
 import { loginAPI } from "@/apis/user";
 import { useCartStore } from "./cartStore";
 import { mergeCartAPI } from "@/apis/cart";
-export const useUserStore = defineStore(
-  "user",
-  () => {
+export const useUserStore = defineStore("user",() => {
     const cartStore = useCartStore();
     // 1.定義管理用戶數據的state
     const userInfo = ref({});
