@@ -1,26 +1,32 @@
 // 封裝購物車模塊
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { useUserStore } from "./user";
-import { insertCartAPI, findNewCartListAPI } from "@/apis/cart";
+import { useUserStore } from "./userStore";
+import { insertCartAPI, findNewCartListAPI, delCartAPI } from "@/apis/cart";
 
-export const useCartStore = defineStore( "cart",() => {
+export const useCartStore = defineStore("cart", () => {
     const userStore = useUserStore();
     const isLogin = computed(() => userStore.userInfo.token);
     // 1.定義state - cartList
     const cartList = ref([]);
+    // 獲取最新購物車列表action
+    const updateNewList = async () => {
+      const res = await findNewCartListAPI();
+      cartList.value = res.result;
+    };
     // 2.定義action - addCart
     const addCart = async (goods) => {
-      const { skuId, count } = goods
+      const { skuId, count } = goods;
       // 添加購物車操作
       if (isLogin.value) {
         // 登入之後的加入購物車邏輯
         // 調用加入購物車接口
-        await insertCartAPI({ skuId, count })
-        // 調用獲取最新購物車列表接口
-        const res = await findNewCartListAPI()
-        // 用接口購物車列表覆蓋本地購物車列表
-        cartList.value = res.result
+        await insertCartAPI({ skuId, count });
+        // // 調用獲取最新購物車列表接口
+        // const res = await findNewCartListAPI();
+        // // 用接口購物車列表覆蓋本地購物車列表
+        // cartList.value = res.result;
+        updateNewList()
       } else {
         // 未登入的加入購物車邏輯-本地購物車
         // 已添加過 - count + 1
@@ -38,15 +44,27 @@ export const useCartStore = defineStore( "cart",() => {
     };
 
     // 刪除購物車
-    const delCart = (skuId) => {
-      // 思路: 1.splice - 找到要刪除項的下標值
-      const idx = cartList.value.findIndex((item) => skuId === item.skuId);
-      cartList.value.splice(idx, 1);
+    const delCart = async (skuId) => {
+      if (isLogin.value) {
+        // 登入時的刪除購物車邏輯
+        //調用刪除購物車街口
+        await delCartAPI([skuId]);
+        // //調用獲取最新購物車列表接口
+        // const res = await findNewCartListAPI();
+        // // 用接口購物車列表覆蓋本地購物車列表
+        // cartList.value = res.result;
+        updateNewList()
+      } else {
+        // 未登入時的刪除購物車邏輯-本地購物車
+        // 思路: 1.splice - 找到要刪除項的下標值
+        const idx = cartList.value.findIndex((item) => skuId === item.skuId);
+        cartList.value.splice(idx, 1);
+        //  2. filter - 使用陣列的過濾方法
+        // const delCart = (skuId) => {
+        //     cartList.value = cartList.value.filter((item) => skuId !== item.skuId);
+        // }
+      }
     };
-    //  2. filter - 使用陣列的過濾方法
-    // const delCart = (skuId) => {
-    //     cartList.value = cartList.value.filter((item) => skuId !== item.skuId);
-    // }
 
     // 單選功能
     // 通過skuId找到要修改的那一項 然後把它的selected修改為傳過來的selected

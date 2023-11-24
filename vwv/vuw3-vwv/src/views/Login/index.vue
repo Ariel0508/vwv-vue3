@@ -3,7 +3,7 @@
 import { ref } from 'vue'
 // 引入封裝街口
 // import { loginAPI } from '@/apis/user'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/userStore'
 // 使用unplugin-element-plus組件
 import 'element-plus/es/components/message/style/css' //樣式需要單獨引入
 import { ElMessage } from 'element-plus'

@@ -1,7 +1,7 @@
 // axios基礎的封裝
 import axios from "axios";
 // 導入 useUserStore
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/userStore";
 // 導入 router
 import router from "@/router";
 // 錯誤提示
