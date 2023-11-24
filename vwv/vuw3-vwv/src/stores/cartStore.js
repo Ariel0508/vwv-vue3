@@ -2,7 +2,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { useUserStore } from "./userStore";
-import { insertCartAPI, findNewCartListAPI, delCartAPI } from "@/apis/cart";
+import { insertCartAPI, findNewCartListAPI, delCartAPI} from "@/apis/cart";
 
 export const useCartStore = defineStore("cart", () => {
     const userStore = useUserStore();
@@ -121,6 +121,7 @@ export const useCartStore = defineStore("cart", () => {
       delCart,
       singleCheck,
       allCheck,
+      updateNewList
     };
   },
   {
